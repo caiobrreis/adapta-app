@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ColoredWords.unity
     guid: a4cd941d0e40f864aaa94586edb844c4
+  - enabled: 1
+    path: Assets/Scenes/MathOperations.unity
+    guid: 472979dd85d75524282f187f3f6d23f0
+  - enabled: 1
+    path: Assets/Scenes/Result.unity
+    guid: 2ec76d52c9212384d948dbfc135d18e8
   m_configObjects: {}
