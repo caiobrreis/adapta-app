@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Result.unity
     guid: 2ec76d52c9212384d948dbfc135d18e8
+  - enabled: 1
+    path: Assets/Scenes/Silhuetas.unity
+    guid: ec9df7c9dbb5e7440ab7cc751559e29a
   m_configObjects: {}

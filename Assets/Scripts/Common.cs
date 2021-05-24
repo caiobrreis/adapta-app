@@ -7,7 +7,9 @@ using TMPro;
 public class Common : MonoBehaviour
 {
     public static Common common;
-    public int prevScene;
+
+    [HideInInspector] public string username;
+    [HideInInspector] public int prevScene;
 
     public GameObject redOutline;
     public GameObject greenOutline;
