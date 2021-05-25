@@ -8,7 +8,7 @@ public class Common : MonoBehaviour
 {
     public static Common common;
 
-    [HideInInspector] public string username;
+    [HideInInspector] public string username = "";
     [HideInInspector] public int prevScene;
 
     public GameObject redOutline;

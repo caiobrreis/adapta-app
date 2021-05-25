@@ -11,7 +11,8 @@ public class MenuManager : MonoBehaviour
     
     void Awake()
     {
-        nameScreen.SetActive(true);
+        if (Common.common.username == "")
+            nameScreen.SetActive(true);
     }
 
     public void NameCheck()
