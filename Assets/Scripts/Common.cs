@@ -43,6 +43,7 @@ public class Common : MonoBehaviour
             Destroy(gameObject);
         }
 
+        Screen.SetResolution(375, 812, false);
         SetStartingGames();
     }
 
