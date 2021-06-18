@@ -10,6 +10,7 @@ public class MathOperations : MonoBehaviour
     private Common common;
     [SerializeField] private TextMeshProUGUI questionField;
     [SerializeField] private Transform buttonsParent;
+    [SerializeField] private TextMeshProUGUI feedbackText;
     private Button correctBtn;
 
     private int symbolIdx;
@@ -78,7 +79,7 @@ public class MathOperations : MonoBehaviour
         else
             common.incorrectJgMat++;
         
-        common.ChangeButtonColor(btn == correctBtn, btn);
+        common.OutcomeFeedback(btn == correctBtn, btn, feedbackText);
 
         if (++round <= common.roundsPerGame) {
             Invoke("NewRound", common.roundWaitTime);

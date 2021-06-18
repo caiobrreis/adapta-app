@@ -21,10 +21,10 @@ EditorUserSettings:
       value: 22424703114646680e0b0227036c72111f19352f223d68252320092a
       flags: 0
     RecentlyUsedScenePath-5:
-      value: 22424703114646680e0b0227036c4942593d172d230c27230e260f36f1ae2136ebf32f
+      value: 22424703114646680e0b0227036c4942593d172d230c27231e20113bf7e52039f1a923e7ee2e26
       flags: 0
     RecentlyUsedScenePath-6:
-      value: 22424703114646680e0b0227036c4942593d172d230c27231e20113bf7e52039f1a923e7ee2e26
+      value: 22424703114646680e0b0227036c4942593d172d230c27230e260f36f1ae2136ebf32f
       flags: 0
     RecentlyUsedScenePath-7:
       value: 22424703114646680e0b0227036c4942593d172d2305272428241c27ebe33b76f7e93ffdfe
@@ -34,6 +34,9 @@ EditorUserSettings:
       flags: 0
     RecentlyUsedScenePath-9:
       value: 22424703114646680e0b0227036c4942593b172d252668252320092a
+      flags: 0
+    UnityRemoteResolution:
+      value: 2d5e460b0459
       flags: 0
     vcSharedLogLevel:
       value: 0d5e400f0650

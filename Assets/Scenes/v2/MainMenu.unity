@@ -123,6 +123,64 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &16296052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 16296054}
+  - component: {fileID: 16296053}
+  m_Layer: 0
+  m_Name: DisplayStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &16296053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16296052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b851dab4e1b12b7479afc225ed030fc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cores_vzs_jogadas: {fileID: 155131268}
+  cores_acertos: {fileID: 1012616036}
+  cores_erros: {fileID: 597205552}
+  cores_tempo_medio: {fileID: 470275139}
+  cores_melhor_tempo: {fileID: 1166986796}
+  mat_vzs_jogadas: {fileID: 1141515669}
+  mat_acertos: {fileID: 1691958943}
+  mat_erros: {fileID: 158526056}
+  mat_tempo_medio: {fileID: 929948932}
+  mat_melhor_tempo: {fileID: 502113003}
+  silhu_vzs_jogadas: {fileID: 1207245354}
+  silhu_acertos: {fileID: 970030742}
+  silhu_erros: {fileID: 1615318035}
+  silhu_tempo_medio: {fileID: 144600813}
+  silhu_melhor_tempo: {fileID: 1364178211}
+--- !u!4 &16296054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16296052}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1270821055}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &43536695
 GameObject:
   m_ObjectHideFlags: 0
@@ -13024,6 +13082,7 @@ RectTransform:
   - {fileID: 67154291}
   - {fileID: 1606184511}
   - {fileID: 1358097719}
+  - {fileID: 16296054}
   m_Father: {fileID: 1632673747}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

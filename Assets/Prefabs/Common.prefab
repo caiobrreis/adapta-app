@@ -43,5 +43,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27bf68ae9f97c574eaf995c824a19740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redOutline: {fileID: 929536082530842951, guid: 8cf67455b641ff84f8d3aeb5f84db13f, type: 3}
-  greenOutline: {fileID: 5078333639521234187, guid: fc9fa48c48798f347b3f64c213e250a9, type: 3}
+  prevFrames: []
+  gameScenesIndexes: 
+  gameScenesIndexesCopy: 
+  playedJgCores: 0
+  correctJgCores: 0
+  incorrectJgCores: 0
+  timeJgCores: 0
+  playedJgMat: 0
+  correctJgMat: 0
+  incorrectJgMat: 0
+  timeJgMat: 0
+  playedJgSilh: 0
+  correctJgSilh: 0
+  incorrectJgSilh: 0
+  timeJgSilh: 0
+  roundWaitTime: 1
+  roundsPerGame: 5

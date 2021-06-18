@@ -9,6 +9,8 @@ public class Common : MonoBehaviour
 {
     public static Common common;
 
+    [HideInInspector] public string email;
+
     [HideInInspector] public List<GameObject> prevFrames = new List<GameObject>();
     [HideInInspector] public List<byte> gameScenesIndexes = new List<byte>();
     [HideInInspector] public List<byte> gameScenesIndexesCopy = new List<byte>();
@@ -28,11 +30,11 @@ public class Common : MonoBehaviour
     [HideInInspector] public int incorrectJgSilh;
     [HideInInspector] public double timeJgSilh;
 
-    [HideInInspector] public float roundWaitTime = 0.5f;
+    public float roundWaitTime = 1f;
     [HideInInspector] public int roundsPerGame = 5;
 
-    private Color32 correctColor = new Color32(100, 255, 100, 255);
-    private Color32 incorrectColor = new Color32(255, 100, 100, 255);
+    private Color32 correctColor = new Color32(4, 196, 0, 255);
+    private Color32 incorrectColor = new Color32(249, 74, 74, 255);
 
     void Awake()
     {
@@ -43,10 +45,11 @@ public class Common : MonoBehaviour
             Destroy(gameObject);
         }
 
-        Screen.SetResolution(375, 812, false);
+        #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            Screen.SetResolution(375, 812, false);
+        #endif
         SetStartingGames();
     }
-
 
     private void SetStartingGames()
     {
@@ -55,23 +58,31 @@ public class Common : MonoBehaviour
         gameScenesIndexes.Add(4);
     }
 
-    public void ChangeButtonColor(bool correct, Button btn)
+    public void OutcomeFeedback(bool correct, Button btn, TextMeshProUGUI feedbackTxt)
     {
         Image img = btn.GetComponent<Image>();
-        img.color = correct ? correctColor : incorrectColor;
+
+        if (correct) {
+            img.color = correctColor;
+            feedbackTxt.text = "Boa, acertou";
+        } else {
+            img.color = incorrectColor;
+            feedbackTxt.text = "Não foi dessa vez";
+        }
 
         TextMeshProUGUI txt = btn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         txt.color = Color.white;
 
-        StartCoroutine(RestoreColor(img, txt));
+        StartCoroutine(ResetFeedback(img, txt, feedbackTxt));
     }
 
-    private IEnumerator RestoreColor(Image img, TextMeshProUGUI txt)
+    private IEnumerator ResetFeedback(Image img, TextMeshProUGUI txt, TextMeshProUGUI feedbackTxt)
     {
         yield return new WaitForSeconds(roundWaitTime);
 
         if (img == null) yield break;
         img.color = Color.white;
+        feedbackTxt.text = "";
 
         if(SceneManager.GetActiveScene().name != "JogoDasCores")
             txt.color = new Color32(50, 50, 50, 255);
@@ -81,8 +92,11 @@ public class Common : MonoBehaviour
     {
         if (gameScenesIndexesCopy.Count == 0) {
             if (SceneManager.GetActiveScene().name != "MainMenu") {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene("MainMenu");
                 StartCoroutine("WriteEndGameStats");
+                StartCoroutine(SavePlayerData(1, correctJgCores, incorrectJgCores, timeJgCores));
+                StartCoroutine(SavePlayerData(2, correctJgMat, incorrectJgMat, timeJgMat));
+                StartCoroutine(SavePlayerData(3, correctJgSilh, incorrectJgSilh, timeJgSilh));
             }
             return;
         }
@@ -94,47 +108,55 @@ public class Common : MonoBehaviour
 
     private IEnumerator WriteEndGameStats()
     {
-        while (SceneManager.GetActiveScene().buildIndex != 1)
+        while (SceneManager.GetActiveScene().name != "MainMenu")
             yield return null;
 
         Transform frameFim = GameObject.Find("Canvas").transform.Find("Frame Fim");
         frameFim.gameObject.SetActive(true);
         Transform fields = frameFim.Find("Fields");
 
-        TextMeshProUGUI scoreTxt = fields.GetChild(0).Find("Score").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI percentTxt = fields.GetChild(0).Find("Percent").GetComponent<TextMeshProUGUI>();
-        RectTransform barFill = fields.GetChild(0).Find("BarFill").GetComponent<RectTransform>();
-        float roundsPlayed = correctJgCores + incorrectJgCores;
-        float barFillAmount = correctJgCores / roundsPlayed;
+        WriteGameStats(fields, 0, correctJgCores, incorrectJgCores);
+        WriteGameStats(fields, 1, correctJgMat, incorrectJgMat);
+        WriteGameStats(fields, 2, correctJgSilh, incorrectJgSilh);
+    }
 
-        scoreTxt.text = $"{correctJgCores} / {roundsPlayed}";
+    private void WriteGameStats(Transform fields, int n, int correct, int incorrect)
+    {
+        TextMeshProUGUI scoreTxt = fields.GetChild(n).Find("Score").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI percentTxt = fields.GetChild(n).Find("Percent").GetComponent<TextMeshProUGUI>();
+        RectTransform barFill = fields.GetChild(n).Find("BarFill").GetComponent<RectTransform>();
+        float roundsPlayed = correct + incorrect;
+        float barFillAmount = correct / roundsPlayed;
+
+        scoreTxt.text = $"{correct} / {roundsPlayed}";
         percentTxt.text = $"{barFillAmount:P0}";
         barFill.sizeDelta = new Vector2(858 * barFillAmount, barFill.sizeDelta.y);
-        if (barFillAmount < 0.57) percentTxt.color = Color.black;
-        else percentTxt.color = Color.white;
 
-        scoreTxt = fields.GetChild(1).Find("Score").GetComponent<TextMeshProUGUI>();
-        percentTxt = fields.GetChild(1).Find("Percent").GetComponent<TextMeshProUGUI>();
-        barFill = fields.GetChild(1).Find("BarFill").GetComponent<RectTransform>();
-        roundsPlayed = correctJgMat + incorrectJgMat;
-        barFillAmount = correctJgMat / roundsPlayed;
+        if (barFillAmount < 0.57) 
+            percentTxt.color = Color.black;
+        else 
+            percentTxt.color = Color.white;
+    }
 
-        scoreTxt.text = $"{correctJgMat} / {roundsPlayed}";
-        percentTxt.text = $"{barFillAmount:P0}";
-        barFill.sizeDelta = new Vector2(858 * barFillAmount, barFill.sizeDelta.y);
-        if (barFillAmount < 0.57) percentTxt.color = Color.black;
-        else percentTxt.color = Color.white;
+    private IEnumerator SavePlayerData(int id, int correct, int incorrect, double time)
+    {
+        double x = System.Math.Truncate(time * 100) / 100;
+        string stime = string.Format("{0:F2}", x).Replace(',', '.');
 
-        scoreTxt = fields.GetChild(2).Find("Score").GetComponent<TextMeshProUGUI>();
-        percentTxt = fields.GetChild(2).Find("Percent").GetComponent<TextMeshProUGUI>();
-        barFill = fields.GetChild(2).Find("BarFill").GetComponent<RectTransform>();
-        roundsPlayed = correctJgSilh + incorrectJgSilh;
-        barFillAmount = correctJgSilh / roundsPlayed;
+        WWWForm form = new WWWForm();
+        form.AddField("email", email);
+        form.AddField("j_id", id);
+        form.AddField("vezes_jogadas", correct + incorrect);
+        form.AddField("acertos", correct);
+        form.AddField("erros", incorrect);
+        form.AddField("tempo", stime);
 
-        scoreTxt.text = $"{correctJgSilh} / {roundsPlayed}";
-        percentTxt.text = $"{barFillAmount:P0}";
-        barFill.sizeDelta = new Vector2(858 * barFillAmount, barFill.sizeDelta.y);
-        if (barFillAmount < 0.57) percentTxt.color = Color.black;
-        else percentTxt.color = Color.white;
+        WWW www = new WWW("http://localhost/sqlconnect/savedata.php", form);
+        yield return www;
+        
+        if (www.text == "0")
+            Debug.Log("Data saved successfully.");
+        else
+            Debug.Log("Data save failed. Error " + www.text);
     }
 }

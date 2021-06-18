@@ -10,6 +10,7 @@ public class Silhouette : MonoBehaviour
     private Common common;
     [SerializeField] private Image imageField;
     [SerializeField] private Transform buttonsParent;
+    [SerializeField] private TextMeshProUGUI feedbackText;
     private Button correctBtn;
 
     private int generatedImageIdx;
@@ -64,7 +65,7 @@ public class Silhouette : MonoBehaviour
         else
             common.incorrectJgSilh++;
 
-        common.ChangeButtonColor(btn == correctBtn, btn);
+        common.OutcomeFeedback(btn == correctBtn, btn, feedbackText);
 
         if (++round <= common.roundsPerGame) {
             Invoke("NewRound", common.roundWaitTime);
