@@ -25,6 +25,7 @@ public class MathOperations : MonoBehaviour
 
     Stopwatch stopwatch = new Stopwatch();
 
+    // Invoked when script gets enabled. Reset stats and starts a new round
     void Start()
     {
         common = Common.common;
@@ -34,6 +35,7 @@ public class MathOperations : MonoBehaviour
         NewRound();
     }
 
+    // Creates a random math operation
     void NewRound()
     {
         waiting = false;
@@ -68,6 +70,7 @@ public class MathOperations : MonoBehaviour
         ManageChoices();
     }
 
+    // Gets called on button click
     void Guessed(Button btn)
     {
         if (waiting) return;
@@ -81,6 +84,7 @@ public class MathOperations : MonoBehaviour
         
         common.OutcomeFeedback(btn == correctBtn, btn, feedbackText);
 
+        // Loads next round or next game if this game is over
         if (++round <= common.roundsPerGame) {
             Invoke("NewRound", common.roundWaitTime);
         } else {
@@ -89,6 +93,7 @@ public class MathOperations : MonoBehaviour
         }
     }
 
+    // Sets button text and adds Guessed as a on button click listener
     void ButtonOperations(Button btn, TextMeshProUGUI txt, List<int> choices, int val)
     {
         btn.onClick.RemoveAllListeners();
@@ -102,12 +107,14 @@ public class MathOperations : MonoBehaviour
     {
         List<int> choices = new List<int>(6);
 
+        // Randomly chooses a button to be the correct one
         int correctChoice = Random.Range(0, buttonsParent.childCount);
         correctBtn = buttonsParent.GetChild(correctChoice).GetComponent<Button>();
         TextMeshProUGUI correctTxt = correctBtn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
         ButtonOperations(correctBtn, correctTxt, choices, result);
 
+        // Chooses a random value and do operations on all incorrect buttons
         foreach (Transform child in buttonsParent) {
             if (child != correctBtn.transform) {
                 Button btn = child.GetComponent<Button>();

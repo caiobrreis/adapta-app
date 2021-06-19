@@ -1,9 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using TMPro;
 
+// All methods of this class are invoked by buttons inside the game
 public class ButtonsFunctions : MonoBehaviour
 {
     public void ChangeScene(string sceneName)
@@ -11,16 +10,17 @@ public class ButtonsFunctions : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    public void SetPrevFrame(GameObject frame)
+    public void AddToScreenHistory(GameObject frame)
     {
-        Common.common.prevFrames.Add(frame);
+        Common.common.framesHistory.Add(frame);
     }
 
-    public void GotoPrevFrame()
+    public void GotoPrevScreen()
     {
-        var pf = Common.common.prevFrames;
-        pf[pf.Count - 1].SetActive(true);
-        pf.RemoveAt(pf.Count - 1);
+        var fh = Common.common.framesHistory;
+
+        fh[fh.Count - 1].SetActive(true);
+        fh.RemoveAt(fh.Count - 1);
     }
 
     public void StartGame()
@@ -50,47 +50,5 @@ public class ButtonsFunctions : MonoBehaviour
     {
         Common.common.gameScenesIndexesCopy.Clear();
         Common.common.NextGame();
-    }
-
-    public void ShowOverlay(Transform parent)
-    {
-        foreach (Transform c in parent.GetComponentsInChildren<Transform>(true))
-        {
-            if (c.CompareTag("Stable") == false) {
-                if (c.CompareTag("Overlay")) {
-                    c.gameObject.SetActive(true);
-                    return;
-                } else {
-                    if(c.TryGetComponent<TextMeshProUGUI>(out var txt)) {
-                        txt.alpha = 0.5f;
-                    } else if (c.TryGetComponent<Image>(out var img)) {
-                        Color clr = img.color;
-                        clr.a = 0.5f;
-                        img.color = clr;
-                    }
-                }
-            }
-        }
-    }
-
-    public void HideOverlay(Transform parent)
-    {
-        foreach (Transform c in parent.GetComponentsInChildren<Transform>(true))
-        {
-            if (c.CompareTag("Stable") == false) {
-                if (c.CompareTag("Overlay")) {
-                    c.gameObject.SetActive(false);
-                    return;
-                } else {
-                    if(c.TryGetComponent<TextMeshProUGUI>(out var txt)) {
-                        txt.alpha = 1f;
-                    } else if (c.TryGetComponent<Image>(out var img)) {
-                        Color clr = img.color;
-                        clr.a = 1f;
-                        img.color = clr;
-                    }
-                }
-            }
-        }
     }
 }

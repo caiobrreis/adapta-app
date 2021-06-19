@@ -12,10 +12,8 @@ public class ColoredWords : MonoBehaviour
     [SerializeField] private TextMeshProUGUI feedbackText;
     private Button correctBtn;
     
-    private int generatedWordIdx;
-    private int generatedColorIdx;
-    private int prevGeneratedWordIdx = -1;
-    private int prevGeneratedColorIdx = -1;
+    private int generatedIdx;
+    private int prevGeneratedIdx = -1;
 
     private byte round = 1;
     private bool waiting = false;
@@ -35,6 +33,7 @@ public class ColoredWords : MonoBehaviour
 
     Stopwatch stopwatch = new Stopwatch();
 
+    // Invoked when script gets enabled. Reset stats and starts a new round
     void Start()
     {
         common = Common.common;
@@ -44,23 +43,21 @@ public class ColoredWords : MonoBehaviour
         NewRound();
     }
 
+    // Randomly chooses a index different than the previous one to be the correct word/color
     void NewRound()
     {
         waiting = false;
         stopwatch.Start();
-        
-        do { generatedWordIdx = Random.Range(0, words.Length); }
-        while (generatedWordIdx == prevGeneratedWordIdx);
 
-        do { generatedColorIdx = Random.Range(0, colors.Length); } 
-        while (generatedColorIdx == generatedWordIdx || generatedColorIdx == prevGeneratedColorIdx);
+        do { generatedIdx = Random.Range(0, colors.Length); } 
+        while (generatedIdx == prevGeneratedIdx);
 
-        prevGeneratedWordIdx = generatedWordIdx;
-        prevGeneratedColorIdx = generatedColorIdx;
+        prevGeneratedIdx = generatedIdx;
 
         ManageChoices();
     }
 
+    // Gets called on button click
     void Guessed(Button btn)
     {
         if (waiting) return;
@@ -74,6 +71,7 @@ public class ColoredWords : MonoBehaviour
         
         common.OutcomeFeedback(btn == correctBtn, btn, feedbackText);
 
+        // Loads next round or next game if this game is over
         if (++round <= common.roundsPerGame) {
             Invoke("NewRound", common.roundWaitTime);
         } else {
@@ -82,6 +80,7 @@ public class ColoredWords : MonoBehaviour
         }
     }
 
+    // Shuffle copies of words and colors list equally
     void ShuffleListsEqually()
     {
         for (int i = 0; i < wordsCopy.Count; i++) {
@@ -97,18 +96,20 @@ public class ColoredWords : MonoBehaviour
         }
     }
 
-    void ButtonOperations(Button btn, TextMeshProUGUI txt, int pos, bool correct)
+    // Sets buttons text and color and adds Guessed as a on button click listener
+    void ButtonOperations(Button btn, TextMeshProUGUI txt, int idx, bool correct)
     {
-        int cPos = correct ? pos : pos - 1;
+        // if this is the correct btn, word and color index will be the same, therefore the will match
+        int colorIdx = correct ? idx : idx - 1;
 
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() => Guessed(btn));
 
-        txt.text = wordsCopy[pos];
-        txt.color = colorsCopy[cPos];
+        txt.text = wordsCopy[idx];
+        txt.color = colorsCopy[colorIdx];
 
-        wordsCopy.RemoveAt(pos);
-        colorsCopy.RemoveAt(cPos);
+        wordsCopy.RemoveAt(idx);
+        colorsCopy.RemoveAt(colorIdx);
     }
 
     void ManageChoices()
@@ -116,14 +117,16 @@ public class ColoredWords : MonoBehaviour
         wordsCopy = words.ToList();
         colorsCopy = colors.ToList();
 
+        // Randomly chooses a button to be the correct one
         int correctChoice = Random.Range(0, buttonsParent.childCount);
         correctBtn = buttonsParent.GetChild(correctChoice).GetComponent<Button>();
         TextMeshProUGUI correctTxt = correctBtn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-        ButtonOperations(correctBtn, correctTxt, generatedColorIdx, true);
+        ButtonOperations(correctBtn, correctTxt, generatedIdx, true);
 
         ShuffleListsEqually();
 
+        // Do operations on all incorrect buttons
         int count = wordsCopy.Count - 1;
         foreach (Transform child in buttonsParent) {
             if (child != correctBtn.transform) {

@@ -500,7 +500,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1180221525}
@@ -721,7 +721,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: GotoPrevFrame
+        m_MethodName: GotoPrevScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1088,7 +1088,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 821990948}
@@ -4035,7 +4035,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1686567576}
@@ -5472,7 +5472,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 821990948}
@@ -7123,7 +7123,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 688569209}
@@ -7462,7 +7462,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: GotoPrevFrame
+        m_MethodName: GotoPrevScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10042,7 +10042,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: GotoPrevFrame
+        m_MethodName: GotoPrevScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11795,7 +11795,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 5957223072150406124, guid: 72191c03983b2d44b93740a9b3bef109, type: 3}
         m_TargetAssemblyTypeName: ButtonsFunctions, Assembly-CSharp
-        m_MethodName: SetPrevFrame
+        m_MethodName: AddToScreenHistory
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 688569209}

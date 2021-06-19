@@ -17,16 +17,19 @@ public class Auth : MonoBehaviour
     public TMP_InputField login_passwordField;
     public Button login_submitButton;
 
+    // Called on register button click
     public void CallRegister()
     {
         StartCoroutine(Register());
     }
 
+    // Called on login button click
     public void CallLogin()
     {
         StartCoroutine(Login());
     }
 
+    // Sends data to register.php, which will create a new user in the database
     IEnumerator Register()
     {
         WWWForm form = new WWWForm();
@@ -46,12 +49,16 @@ public class Auth : MonoBehaviour
         }
     }
 
+    // Invoked by OnValueChanged listeners of all input fields in the registration screen.
+    // Only set the button as interactable if there is some text on phone and email field
+    // and at least 8 characters on password field and if both password fields text matches.
     public void VerifyRegisterInputs()
     {
         reg_submitButton.interactable = (reg_phoneField.text.Length > 0 && reg_emailField.text.Length > 0 && reg_passwordField.text.Length >= 8) && 
                                         (reg_passwordField.text == reg_repeatPasswordField.text);
     }
 
+    // Sends login data to login.php, which will connect a user to its account if information given is correct
     IEnumerator Login()
     {
         WWWForm form = new WWWForm();
@@ -71,6 +78,9 @@ public class Auth : MonoBehaviour
         }
     }
 
+    // Invoked by OnValueChanged listeners of all input fields in the login screen.
+    // Only set the button as interactable if there is some text on phone/email field
+    // and at least 8 characters on password field.
     public void VerifyLoginInputs()
     {
         login_submitButton.interactable = login_emailPhoneField.text.Length > 0 && login_passwordField.text.Length >= 8;

@@ -25,6 +25,8 @@ public class DisplayStats : MonoBehaviour
     public TextMeshProUGUI silhu_tempo_medio;
     public TextMeshProUGUI silhu_melhor_tempo;
 
+    // Invoked with the stats screen
+    // Get player data from the database and write to the user screen
     IEnumerator Start()
     {
         WWWForm form = new WWWForm();

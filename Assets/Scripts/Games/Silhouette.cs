@@ -18,7 +18,6 @@ public class Silhouette : MonoBehaviour
     private byte round = 1;
     private bool waiting = false;
 
-    //! NÃO MUDAR O NOME DESSA VARIÁVEL images
     public Sprite[] images = new Sprite[] { };
     private string[] words = new string[] {
         "garrafa", "abajur", "ventilador", "lápis", "chave", "bicicleta", "caneca", "garfo", "foguete", "martelo", "lua",
@@ -33,6 +32,7 @@ public class Silhouette : MonoBehaviour
 
     Stopwatch stopwatch = new Stopwatch();
 
+    // Invoked when script gets enabled. Reset stats and starts a new round
     void Start()
     {
         common = Common.common;
@@ -43,6 +43,7 @@ public class Silhouette : MonoBehaviour
         NewRound();
     }
 
+    // Get a new random image
     void NewRound()
     {
         waiting = false;
@@ -54,6 +55,7 @@ public class Silhouette : MonoBehaviour
         ManageChoices();
     }
 
+    // Gets called on button click
     void Guessed(Button btn)
     {
         if (waiting) return;
@@ -67,6 +69,7 @@ public class Silhouette : MonoBehaviour
 
         common.OutcomeFeedback(btn == correctBtn, btn, feedbackText);
 
+        // Loads next round or next game if this game is over
         if (++round <= common.roundsPerGame) {
             Invoke("NewRound", common.roundWaitTime);
         } else {
@@ -75,6 +78,7 @@ public class Silhouette : MonoBehaviour
         }
     }
 
+    // Adds Guessed as a on button click listener
     void ButtonOperations(Button btn)
     {
         btn.onClick.RemoveAllListeners();
@@ -85,16 +89,19 @@ public class Silhouette : MonoBehaviour
     {
         wordsCopy = words.ToList();
 
+        // Randomly chooses a button to be the correct one
         int correctChoice = Random.Range(0, buttonsParent.childCount);
         correctBtn = buttonsParent.GetChild(correctChoice).GetComponent<Button>();
         TextMeshProUGUI correctTxt = correctBtn.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
         ButtonOperations(correctBtn);
 
+        // Set a button with the correct answer text
         correctTxt.text = imagesCopy[generatedImageIdx].name;
         wordsCopy.Remove(imagesCopy[generatedImageIdx].name);
         imagesCopy.Remove(imagesCopy[generatedImageIdx]);
 
+        // Chooses a random text to all incorrect buttons
         foreach (Transform child in buttonsParent) {
             if (child != correctBtn.transform) {
                 Button btn = child.GetComponent<Button>();

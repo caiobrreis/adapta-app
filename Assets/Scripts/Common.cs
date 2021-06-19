@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+// This class can be accessed from anywhere and will always have one instance
+// It is mainly used for methods present common to multiple scripts
 public class Common : MonoBehaviour
 {
     public static Common common;
 
     [HideInInspector] public string email;
 
-    [HideInInspector] public List<GameObject> prevFrames = new List<GameObject>();
+    [HideInInspector] public List<GameObject> framesHistory = new List<GameObject>();
     [HideInInspector] public List<byte> gameScenesIndexes = new List<byte>();
     [HideInInspector] public List<byte> gameScenesIndexesCopy = new List<byte>();
 
@@ -38,6 +40,7 @@ public class Common : MonoBehaviour
 
     void Awake()
     {
+        // Ensure it has only one instance
         if (common == null) {
             DontDestroyOnLoad(gameObject);
             common = this;
@@ -45,12 +48,15 @@ public class Common : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // Fix for a Unity bug
         #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
             Screen.SetResolution(375, 812, false);
         #endif
+
         SetStartingGames();
     }
 
+    // Starts the application with all 3 games selected
     private void SetStartingGames()
     {
         gameScenesIndexes.Add(2);
@@ -58,6 +64,7 @@ public class Common : MonoBehaviour
         gameScenesIndexes.Add(4);
     }
 
+    // Visual feedback for when the player makes a guess
     public void OutcomeFeedback(bool correct, Button btn, TextMeshProUGUI feedbackTxt)
     {
         Image img = btn.GetComponent<Image>();
@@ -76,6 +83,7 @@ public class Common : MonoBehaviour
         StartCoroutine(ResetFeedback(img, txt, feedbackTxt));
     }
 
+    // Restore normal state after giving the feedback
     private IEnumerator ResetFeedback(Image img, TextMeshProUGUI txt, TextMeshProUGUI feedbackTxt)
     {
         yield return new WaitForSeconds(roundWaitTime);
@@ -90,10 +98,12 @@ public class Common : MonoBehaviour
 
     public void NextGame()
     {
+        // If there are no more games to be played, write player score in the screen
+        // and save it to the database
         if (gameScenesIndexesCopy.Count == 0) {
             if (SceneManager.GetActiveScene().name != "MainMenu") {
                 SceneManager.LoadScene("MainMenu");
-                StartCoroutine("WriteEndGameStats");
+                StartCoroutine(ManageEndGameScreen());
                 StartCoroutine(SavePlayerData(1, correctJgCores, incorrectJgCores, timeJgCores));
                 StartCoroutine(SavePlayerData(2, correctJgMat, incorrectJgMat, timeJgMat));
                 StartCoroutine(SavePlayerData(3, correctJgSilh, incorrectJgSilh, timeJgSilh));
@@ -101,12 +111,14 @@ public class Common : MonoBehaviour
             return;
         }
 
+        // In case there are more games to be played, load the next one
         int randGame = Random.Range(0, gameScenesIndexesCopy.Count);
         SceneManager.LoadScene(gameScenesIndexesCopy[randGame]);
         gameScenesIndexesCopy.RemoveAt(randGame);
     }
 
-    private IEnumerator WriteEndGameStats()
+    // Load post game screen and get stats parent object
+    private IEnumerator ManageEndGameScreen()
     {
         while (SceneManager.GetActiveScene().name != "MainMenu")
             yield return null;
@@ -120,6 +132,7 @@ public class Common : MonoBehaviour
         WriteGameStats(fields, 2, correctJgSilh, incorrectJgSilh);
     }
 
+    // Write a game stats to the player screen
     private void WriteGameStats(Transform fields, int n, int correct, int incorrect)
     {
         TextMeshProUGUI scoreTxt = fields.GetChild(n).Find("Score").GetComponent<TextMeshProUGUI>();
@@ -138,6 +151,7 @@ public class Common : MonoBehaviour
             percentTxt.color = Color.white;
     }
 
+    // Send game stats to savedata.php to store and update player stats
     private IEnumerator SavePlayerData(int id, int correct, int incorrect, double time)
     {
         double x = System.Math.Truncate(time * 100) / 100;
